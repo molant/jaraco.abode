@@ -1,0 +1,224 @@
+curl 'https://my.goabode.com/integrations/v1/security-panel' \
+  -H 'abode-api-key: web-55e08e80d586a054df88b98ca6aa8e43' \
+  -H 'accept: application/json, text/plain, */*' \
+  -H 'accept-language: en-US,en;q=0.9,es;q=0.8,fr;q=0.7' \
+  -H 'authorization: Bearer BEARER_TOKEN' \
+  -H 'cache-control: no-cache' \
+  -b 'intercom-id-lpy373eb=c0a05079-ee84-472d-9c8f-70c78d901442; intercom-session-lpy373eb=; intercom-device-id-lpy373eb=e23843fa-c4ac-4aa5-871e-c474852701c8; sbjs_migrations=1418474375998%3D1; sbjs_current_add=fd%3D2025-11-14%2005%3A25%3A30%7C%7C%7Cep%3Dhttps%3A%2F%2Fgoabode.com%2Fproduct%2Fpanic-button%2F%7C%7C%7Crf%3Dhttps%3A%2F%2Fwww.google.com%2F; sbjs_first_add=fd%3D2025-11-14%2005%3A25%3A30%7C%7C%7Cep%3Dhttps%3A%2F%2Fgoabode.com%2Fproduct%2Fpanic-button%2F%7C%7C%7Crf%3Dhttps%3A%2F%2Fwww.google.com%2F; sbjs_first=typ%3Dorganic%7C%7C%7Csrc%3Dgoogle%7C%7C%7Cmdm%3Dorganic%7C%7C%7Ccmp%3D%28none%29%7C%7C%7Ccnt%3D%28none%29%7C%7C%7Cid%3D%28none%29%7C%7C%7Ctrm%3D%28none%29%7C%7C%7Cmtke%3D%28none%29; sbjs_current=typ%3Dorganic%7C%7C%7Csrc%3Dgoogle%7C%7C%7Cmdm%3Dorganic%7C%7C%7Ccmp%3D%28none%29%7C%7C%7Ccnt%3D%28none%29%7C%7C%7Ctrm%3D%28none%29%7C%7C%7Cid%3D%28none%29%7C%7C%7Cplt%3D%28none%29%7C%7C%7Cfmt%3D%28none%29%7C%7C%7Ctct%3D%28none%29; _gcl_au=1.1.186159481.1763097931; __stripe_mid=ffd0172a-5628-4dc9-966b-cc0059175a85c07d45; SESSION=24tucqrrg3drebqfvle1tnbka9; __stripe_mid=ffd0172a-5628-4dc9-966b-cc0059175a85c07d45; horizontalMenu.isVisible=false; horizontalMenu.isFixed=true; horizontalMenu.minimal=false; horizontalMenu.clickToExpand=false; sidebar.isVisible=true; sidebar.isCollapsed=false; sidebar.toggleOthers=true; sidebar.isFixed=true; sidebar.isRight=false; footer.isVisible=false; chat.isOpen=false; container.isBoxed=false; skins.sidebarMenu=; skins.horizontalMenu=; skins.userInfoNavbar=; uuid=2caff5ada18381117aa80112d9280740; _ga_6V0N110K00=GS2.1.s1763347573$o5$g1$t1763347668$j60$l0$h0; __cf_bm=tLJ99wtTplqRihzEN41xL50zS1Ep7Yk4Dl.bWPlTBfc-1763356600-1.0.1.1-ky9vaco3B69DU1tQbqF9V9uqsTCZi6o35SUguNYQ0lv9v.XJsiFiRFlSSL.T2wyUTs_qskBD2vLpZS6fymSfe86gvZUfDYfW30QIufsAeco; _gid=GA1.2.1002194410.1763356601; _ga=GA1.1.898928841.1763097924; sbjs_udata=vst%3D3%7C%7C%7Cuip%3D%28none%29%7C%7C%7Cuag%3DMozilla%2F5.0%20%28Macintosh%3B%20Intel%20Mac%20OS%20X%2010_15_7%29%20AppleWebKit%2F537.36%20%28KHTML%2C%20like%20Gecko%29%20Chrome%2F142.0.0.0%20Safari%2F537.36; sbjs_session=pgs%3D1%7C%7C%7Ccpg%3Dhttps%3A%2F%2Fgoabode.com%2F; _rdt_uuid=1763097932410.a14dfbf9-2381-493a-926a-eff8f47a98de; _ga_WDEJMWNBBE=GS2.1.s1763356600$o5$g0$t1763356601$j59$l0$h0; cf_clearance=fi3N.79o14R6zGPA8KbAVMuZIbx6rJ4Rx7Uskjsgl1c-1763356601-1.2.1.1-DwZhSlOQIZlLrOVo4gVF8ELeklLjBLQbuO1..3qzEZacfMdiDTkvPCjxTG9VMMsK3cA1vd8bHeWWCJTiViyjaz9IM1J_bJVgqy1IljTABozDIKMJo4M_ILbjHJ4jghz9mgDL76wd6bjZWwVzzqqEhf4joBrrTURbw5dhB0rGYMFhFa1WaCREiu1CsuxgtfS1wnRKBItCNO4UU7HjO5Kr5r4PHUEFZJmIixNnh75WYSc; __stripe_sid=3cddcfd7-94de-41f7-b889-74de9c6ef1ef1a4582; key=web-55e08e80d586a054df88b98ca6aa8e43; io=6-QedhvshlTW3_NZCANp; AWSALB=x970K1AvSZwSgepT5E00B3y1XeAjXk3AKvlhk6M2E1m7JsP64Z2vHyqTeSDTNPPzTC/5JJ6sFlWLyAWEewAVjRmGAASFWqopxxHK/W7neFCDzioBu9VysypbVidb; AWSALBCORS=x970K1AvSZwSgepT5E00B3y1XeAjXk3AKvlhk6M2E1m7JsP64Z2vHyqTeSDTNPPzTC/5JJ6sFlWLyAWEewAVjRmGAASFWqopxxHK/W7neFCDzioBu9VysypbVidb; _ga_H6G2PP8V96=GS2.1.s1763356603$o3$g1$t1763356707$j21$l0$h0' \
+  -H 'dnt: 1' \
+  -H 'pragma: no-cache' \
+  -H 'priority: u=1, i' \
+  -H 'referer: https://my.goabode.com/' \
+  -H 'sec-ch-ua: "Chromium";v="142", "Google Chrome";v="142", "Not_A Brand";v="99"' \
+  -H 'sec-ch-ua-mobile: ?0' \
+  -H 'sec-ch-ua-platform: "macOS"' \
+  -H 'sec-fetch-dest: empty' \
+  -H 'sec-fetch-mode: cors' \
+  -H 'sec-fetch-site: same-origin' \
+  -H 'user-agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36' \
+  -H 'x-sender: WebApp' ;
+
+
+RESPONSE:
+{
+    "id": "B0:C5:CA:3A:A4:84",
+    "siteId": "66236d79648c458bba0476051f7d9fed",
+    "type": "1",
+    "state": {
+        "panelMode": "STANDBY",
+        "currentAlarms": [],
+        "cellConnected": false,
+        "cellSignalStrength": "9"
+    },
+    "health": {
+        "connectivity": "OK",
+        "faults": []
+    },
+    "attributes": {
+        "home": {
+            "entryTimerInSeconds": 60,
+            "exitTimerInSeconds": 60
+        },
+        "away": {
+            "entryTimerInSeconds": 60,
+            "exitTimerInSeconds": 60
+        },
+        "cms": {
+            "vendorId": 2,
+            "vendor": "rrms",
+            "testModeActive": false,
+            "customSettings": true,
+            "monitoringActive": true,
+            "faults": [],
+            "pin": "4_DIGIT_PIN"
+        }
+    }
+}
+
+curl 'https://my.goabode.com/integrations/v1/cms/settings' \
+  -H 'abode-api-key: web-55e08e80d586a054df88b98ca6aa8e43' \
+  -H 'accept: application/json, text/plain, */*' \
+  -H 'accept-language: en-US,en;q=0.9,es;q=0.8,fr;q=0.7' \
+  -H 'authorization: Bearer BEARER_TOKEN' \
+  -H 'cache-control: no-cache' \
+  -H 'content-type: application/json; charset=UTF-8' \
+  -b 'intercom-id-lpy373eb=c0a05079-ee84-472d-9c8f-70c78d901442; intercom-session-lpy373eb=; intercom-device-id-lpy373eb=e23843fa-c4ac-4aa5-871e-c474852701c8; sbjs_migrations=1418474375998%3D1; sbjs_current_add=fd%3D2025-11-14%2005%3A25%3A30%7C%7C%7Cep%3Dhttps%3A%2F%2Fgoabode.com%2Fproduct%2Fpanic-button%2F%7C%7C%7Crf%3Dhttps%3A%2F%2Fwww.google.com%2F; sbjs_first_add=fd%3D2025-11-14%2005%3A25%3A30%7C%7C%7Cep%3Dhttps%3A%2F%2Fgoabode.com%2Fproduct%2Fpanic-button%2F%7C%7C%7Crf%3Dhttps%3A%2F%2Fwww.google.com%2F; sbjs_first=typ%3Dorganic%7C%7C%7Csrc%3Dgoogle%7C%7C%7Cmdm%3Dorganic%7C%7C%7Ccmp%3D%28none%29%7C%7C%7Ccnt%3D%28none%29%7C%7C%7Cid%3D%28none%29%7C%7C%7Ctrm%3D%28none%29%7C%7C%7Cmtke%3D%28none%29; sbjs_current=typ%3Dorganic%7C%7C%7Csrc%3Dgoogle%7C%7C%7Cmdm%3Dorganic%7C%7C%7Ccmp%3D%28none%29%7C%7C%7Ccnt%3D%28none%29%7C%7C%7Ctrm%3D%28none%29%7C%7C%7Cid%3D%28none%29%7C%7C%7Cplt%3D%28none%29%7C%7C%7Cfmt%3D%28none%29%7C%7C%7Ctct%3D%28none%29; _gcl_au=1.1.186159481.1763097931; __stripe_mid=ffd0172a-5628-4dc9-966b-cc0059175a85c07d45; SESSION=24tucqrrg3drebqfvle1tnbka9; __stripe_mid=ffd0172a-5628-4dc9-966b-cc0059175a85c07d45; horizontalMenu.isVisible=false; horizontalMenu.isFixed=true; horizontalMenu.minimal=false; horizontalMenu.clickToExpand=false; sidebar.isVisible=true; sidebar.isCollapsed=false; sidebar.toggleOthers=true; sidebar.isFixed=true; sidebar.isRight=false; footer.isVisible=false; chat.isOpen=false; container.isBoxed=false; skins.sidebarMenu=; skins.horizontalMenu=; skins.userInfoNavbar=; uuid=2caff5ada18381117aa80112d9280740; _ga_6V0N110K00=GS2.1.s1763347573$o5$g1$t1763347668$j60$l0$h0; __cf_bm=tLJ99wtTplqRihzEN41xL50zS1Ep7Yk4Dl.bWPlTBfc-1763356600-1.0.1.1-ky9vaco3B69DU1tQbqF9V9uqsTCZi6o35SUguNYQ0lv9v.XJsiFiRFlSSL.T2wyUTs_qskBD2vLpZS6fymSfe86gvZUfDYfW30QIufsAeco; _gid=GA1.2.1002194410.1763356601; _ga=GA1.1.898928841.1763097924; sbjs_udata=vst%3D3%7C%7C%7Cuip%3D%28none%29%7C%7C%7Cuag%3DMozilla%2F5.0%20%28Macintosh%3B%20Intel%20Mac%20OS%20X%2010_15_7%29%20AppleWebKit%2F537.36%20%28KHTML%2C%20like%20Gecko%29%20Chrome%2F142.0.0.0%20Safari%2F537.36; sbjs_session=pgs%3D1%7C%7C%7Ccpg%3Dhttps%3A%2F%2Fgoabode.com%2F; _rdt_uuid=1763097932410.a14dfbf9-2381-493a-926a-eff8f47a98de; _ga_WDEJMWNBBE=GS2.1.s1763356600$o5$g0$t1763356601$j59$l0$h0; cf_clearance=fi3N.79o14R6zGPA8KbAVMuZIbx6rJ4Rx7Uskjsgl1c-1763356601-1.2.1.1-DwZhSlOQIZlLrOVo4gVF8ELeklLjBLQbuO1..3qzEZacfMdiDTkvPCjxTG9VMMsK3cA1vd8bHeWWCJTiViyjaz9IM1J_bJVgqy1IljTABozDIKMJo4M_ILbjHJ4jghz9mgDL76wd6bjZWwVzzqqEhf4joBrrTURbw5dhB0rGYMFhFa1WaCREiu1CsuxgtfS1wnRKBItCNO4UU7HjO5Kr5r4PHUEFZJmIixNnh75WYSc; __stripe_sid=3cddcfd7-94de-41f7-b889-74de9c6ef1ef1a4582; key=web-55e08e80d586a054df88b98ca6aa8e43; io=6-QedhvshlTW3_NZCANp; AWSALB=x970K1AvSZwSgepT5E00B3y1XeAjXk3AKvlhk6M2E1m7JsP64Z2vHyqTeSDTNPPzTC/5JJ6sFlWLyAWEewAVjRmGAASFWqopxxHK/W7neFCDzioBu9VysypbVidb; AWSALBCORS=x970K1AvSZwSgepT5E00B3y1XeAjXk3AKvlhk6M2E1m7JsP64Z2vHyqTeSDTNPPzTC/5JJ6sFlWLyAWEewAVjRmGAASFWqopxxHK/W7neFCDzioBu9VysypbVidb; _ga_H6G2PP8V96=GS2.1.s1763356603$o3$g1$t1763356707$j21$l0$h0' \
+  -H 'dnt: 1' \
+  -H 'origin: https://my.goabode.com' \
+  -H 'pragma: no-cache' \
+  -H 'priority: u=1, i' \
+  -H 'referer: https://my.goabode.com/' \
+  -H 'sec-ch-ua: "Chromium";v="142", "Google Chrome";v="142", "Not_A Brand";v="99"' \
+  -H 'sec-ch-ua-mobile: ?0' \
+  -H 'sec-ch-ua-platform: "macOS"' \
+  -H 'sec-fetch-dest: empty' \
+  -H 'sec-fetch-mode: cors' \
+  -H 'sec-fetch-site: same-origin' \
+  -H 'user-agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36' \
+  -H 'x-sender: WebApp' \
+  --data-raw '{"testModeActive":true}' ;
+
+RESPONSE:
+{
+    "monitoringActive": true,
+    "testModeActive": true,
+    "sendMedia": true,
+    "dispatchWithoutVerification": true,
+    "dispatchPolice": true,
+    "dispatchFire": true,
+    "dispatchMedical": true
+}
+
+
+curl 'https://my.goabode.com/integrations/v1/plan/current' \
+  -H 'abode-api-key: web-55e08e80d586a054df88b98ca6aa8e43' \
+  -H 'accept: application/json, text/plain, */*' \
+  -H 'accept-language: en-US,en;q=0.9,es;q=0.8,fr;q=0.7' \
+  -H 'authorization: Bearer BEARER_TOKEN' \
+  -H 'cache-control: no-cache' \
+  -b 'intercom-id-lpy373eb=c0a05079-ee84-472d-9c8f-70c78d901442; intercom-session-lpy373eb=; intercom-device-id-lpy373eb=e23843fa-c4ac-4aa5-871e-c474852701c8; sbjs_migrations=1418474375998%3D1; sbjs_current_add=fd%3D2025-11-14%2005%3A25%3A30%7C%7C%7Cep%3Dhttps%3A%2F%2Fgoabode.com%2Fproduct%2Fpanic-button%2F%7C%7C%7Crf%3Dhttps%3A%2F%2Fwww.google.com%2F; sbjs_first_add=fd%3D2025-11-14%2005%3A25%3A30%7C%7C%7Cep%3Dhttps%3A%2F%2Fgoabode.com%2Fproduct%2Fpanic-button%2F%7C%7C%7Crf%3Dhttps%3A%2F%2Fwww.google.com%2F; sbjs_first=typ%3Dorganic%7C%7C%7Csrc%3Dgoogle%7C%7C%7Cmdm%3Dorganic%7C%7C%7Ccmp%3D%28none%29%7C%7C%7Ccnt%3D%28none%29%7C%7C%7Cid%3D%28none%29%7C%7C%7Ctrm%3D%28none%29%7C%7C%7Cmtke%3D%28none%29; sbjs_current=typ%3Dorganic%7C%7C%7Csrc%3Dgoogle%7C%7C%7Cmdm%3Dorganic%7C%7C%7Ccmp%3D%28none%29%7C%7C%7Ccnt%3D%28none%29%7C%7C%7Ctrm%3D%28none%29%7C%7C%7Cid%3D%28none%29%7C%7C%7Cplt%3D%28none%29%7C%7C%7Cfmt%3D%28none%29%7C%7C%7Ctct%3D%28none%29; _gcl_au=1.1.186159481.1763097931; __stripe_mid=ffd0172a-5628-4dc9-966b-cc0059175a85c07d45; SESSION=24tucqrrg3drebqfvle1tnbka9; __stripe_mid=ffd0172a-5628-4dc9-966b-cc0059175a85c07d45; horizontalMenu.isVisible=false; horizontalMenu.isFixed=true; horizontalMenu.minimal=false; horizontalMenu.clickToExpand=false; sidebar.isVisible=true; sidebar.isCollapsed=false; sidebar.toggleOthers=true; sidebar.isFixed=true; sidebar.isRight=false; footer.isVisible=false; chat.isOpen=false; container.isBoxed=false; skins.sidebarMenu=; skins.horizontalMenu=; skins.userInfoNavbar=; uuid=2caff5ada18381117aa80112d9280740; _ga_6V0N110K00=GS2.1.s1763347573$o5$g1$t1763347668$j60$l0$h0; __cf_bm=tLJ99wtTplqRihzEN41xL50zS1Ep7Yk4Dl.bWPlTBfc-1763356600-1.0.1.1-ky9vaco3B69DU1tQbqF9V9uqsTCZi6o35SUguNYQ0lv9v.XJsiFiRFlSSL.T2wyUTs_qskBD2vLpZS6fymSfe86gvZUfDYfW30QIufsAeco; _gid=GA1.2.1002194410.1763356601; _ga=GA1.1.898928841.1763097924; sbjs_udata=vst%3D3%7C%7C%7Cuip%3D%28none%29%7C%7C%7Cuag%3DMozilla%2F5.0%20%28Macintosh%3B%20Intel%20Mac%20OS%20X%2010_15_7%29%20AppleWebKit%2F537.36%20%28KHTML%2C%20like%20Gecko%29%20Chrome%2F142.0.0.0%20Safari%2F537.36; sbjs_session=pgs%3D1%7C%7C%7Ccpg%3Dhttps%3A%2F%2Fgoabode.com%2F; _rdt_uuid=1763097932410.a14dfbf9-2381-493a-926a-eff8f47a98de; _ga_WDEJMWNBBE=GS2.1.s1763356600$o5$g0$t1763356601$j59$l0$h0; cf_clearance=fi3N.79o14R6zGPA8KbAVMuZIbx6rJ4Rx7Uskjsgl1c-1763356601-1.2.1.1-DwZhSlOQIZlLrOVo4gVF8ELeklLjBLQbuO1..3qzEZacfMdiDTkvPCjxTG9VMMsK3cA1vd8bHeWWCJTiViyjaz9IM1J_bJVgqy1IljTABozDIKMJo4M_ILbjHJ4jghz9mgDL76wd6bjZWwVzzqqEhf4joBrrTURbw5dhB0rGYMFhFa1WaCREiu1CsuxgtfS1wnRKBItCNO4UU7HjO5Kr5r4PHUEFZJmIixNnh75WYSc; __stripe_sid=3cddcfd7-94de-41f7-b889-74de9c6ef1ef1a4582; key=web-55e08e80d586a054df88b98ca6aa8e43; io=6-QedhvshlTW3_NZCANp; AWSALB=x970K1AvSZwSgepT5E00B3y1XeAjXk3AKvlhk6M2E1m7JsP64Z2vHyqTeSDTNPPzTC/5JJ6sFlWLyAWEewAVjRmGAASFWqopxxHK/W7neFCDzioBu9VysypbVidb; AWSALBCORS=x970K1AvSZwSgepT5E00B3y1XeAjXk3AKvlhk6M2E1m7JsP64Z2vHyqTeSDTNPPzTC/5JJ6sFlWLyAWEewAVjRmGAASFWqopxxHK/W7neFCDzioBu9VysypbVidb; _ga_H6G2PP8V96=GS2.1.s1763356603$o3$g1$t1763356707$j21$l0$h0' \
+  -H 'dnt: 1' \
+  -H 'pragma: no-cache' \
+  -H 'priority: u=1, i' \
+  -H 'referer: https://my.goabode.com/' \
+  -H 'sec-ch-ua: "Chromium";v="142", "Google Chrome";v="142", "Not_A Brand";v="99"' \
+  -H 'sec-ch-ua-mobile: ?0' \
+  -H 'sec-ch-ua-platform: "macOS"' \
+  -H 'sec-fetch-dest: empty' \
+  -H 'sec-fetch-mode: cors' \
+  -H 'sec-fetch-site: same-origin' \
+  -H 'user-agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36' \
+  -H 'x-sender: WebApp' ;
+
+RESPONSE:
+{
+    "plan": {
+        "planId": 20,
+        "planName": "Pro",
+        "planClass": "pro",
+        "planTitle": "Pro Plan",
+        "planPrice": 200,
+        "currency": "USD",
+        "nameInterval": "Pro (Yearly)",
+        "isGatewayPlan": true,
+        "isBasic": false,
+        "weightage": 40,
+        "intervalType": "annually",
+        "associateLimit": 100,
+        "trialPeriodInDays": null,
+        "isActive": true,
+        "features": {
+            "associateUserLimit": 100,
+            "contactLimit": 2,
+            "deviceLimit": 155,
+            "cameraLimit": 100,
+            "cameraReportingLimit": null,
+            "quickActionLimit": 100,
+            "automationLimit": 100,
+            "mediaStorageInDays": 10,
+            "automations": true,
+            "timeline": true,
+            "cellularBackup": true,
+            "thirdPartyDevices": true,
+            "professionalMonitoring": true,
+            "adhocMonitoring": false,
+            "emailNotifications": true,
+            "pushNotifications": 1,
+            "premiumSupport": true,
+            "armDisarm": true,
+            "adSupported": false,
+            "cameraSmartDetection": true,
+            "cameraLiveStreaming": true,
+            "cameraMotion": true,
+            "cameraVideoCapture": true,
+            "cameraDetectionZone": true,
+            "cameraFacialRecognition": false,
+            "cameraMultiView": true,
+            "ifttt": true,
+            "alexa": true,
+            "nest": true,
+            "ecobee": true,
+            "googleSmartHome": true,
+            "sonos": true,
+            "bose": true
+        }
+    },
+    "additions": []
+}
+
+curl 'https://my.goabode.com/integrations/v1/security-panel' \
+  -H 'abode-api-key: web-55e08e80d586a054df88b98ca6aa8e43' \
+  -H 'accept: application/json, text/plain, */*' \
+  -H 'accept-language: en-US,en;q=0.9,es;q=0.8,fr;q=0.7' \
+  -H 'authorization: Bearer BEARER_TOKEN' \
+  -H 'cache-control: no-cache' \
+  -b 'intercom-id-lpy373eb=c0a05079-ee84-472d-9c8f-70c78d901442; intercom-session-lpy373eb=; intercom-device-id-lpy373eb=e23843fa-c4ac-4aa5-871e-c474852701c8; sbjs_migrations=1418474375998%3D1; sbjs_current_add=fd%3D2025-11-14%2005%3A25%3A30%7C%7C%7Cep%3Dhttps%3A%2F%2Fgoabode.com%2Fproduct%2Fpanic-button%2F%7C%7C%7Crf%3Dhttps%3A%2F%2Fwww.google.com%2F; sbjs_first_add=fd%3D2025-11-14%2005%3A25%3A30%7C%7C%7Cep%3Dhttps%3A%2F%2Fgoabode.com%2Fproduct%2Fpanic-button%2F%7C%7C%7Crf%3Dhttps%3A%2F%2Fwww.google.com%2F; sbjs_first=typ%3Dorganic%7C%7C%7Csrc%3Dgoogle%7C%7C%7Cmdm%3Dorganic%7C%7C%7Ccmp%3D%28none%29%7C%7C%7Ccnt%3D%28none%29%7C%7C%7Cid%3D%28none%29%7C%7C%7Ctrm%3D%28none%29%7C%7C%7Cmtke%3D%28none%29; sbjs_current=typ%3Dorganic%7C%7C%7Csrc%3Dgoogle%7C%7C%7Cmdm%3Dorganic%7C%7C%7Ccmp%3D%28none%29%7C%7C%7Ccnt%3D%28none%29%7C%7C%7Ctrm%3D%28none%29%7C%7C%7Cid%3D%28none%29%7C%7C%7Cplt%3D%28none%29%7C%7C%7Cfmt%3D%28none%29%7C%7C%7Ctct%3D%28none%29; _gcl_au=1.1.186159481.1763097931; __stripe_mid=ffd0172a-5628-4dc9-966b-cc0059175a85c07d45; SESSION=24tucqrrg3drebqfvle1tnbka9; __stripe_mid=ffd0172a-5628-4dc9-966b-cc0059175a85c07d45; horizontalMenu.isVisible=false; horizontalMenu.isFixed=true; horizontalMenu.minimal=false; horizontalMenu.clickToExpand=false; sidebar.isVisible=true; sidebar.isCollapsed=false; sidebar.toggleOthers=true; sidebar.isFixed=true; sidebar.isRight=false; footer.isVisible=false; chat.isOpen=false; container.isBoxed=false; skins.sidebarMenu=; skins.horizontalMenu=; skins.userInfoNavbar=; uuid=2caff5ada18381117aa80112d9280740; _ga_6V0N110K00=GS2.1.s1763347573$o5$g1$t1763347668$j60$l0$h0; __cf_bm=tLJ99wtTplqRihzEN41xL50zS1Ep7Yk4Dl.bWPlTBfc-1763356600-1.0.1.1-ky9vaco3B69DU1tQbqF9V9uqsTCZi6o35SUguNYQ0lv9v.XJsiFiRFlSSL.T2wyUTs_qskBD2vLpZS6fymSfe86gvZUfDYfW30QIufsAeco; _gid=GA1.2.1002194410.1763356601; _ga=GA1.1.898928841.1763097924; sbjs_udata=vst%3D3%7C%7C%7Cuip%3D%28none%29%7C%7C%7Cuag%3DMozilla%2F5.0%20%28Macintosh%3B%20Intel%20Mac%20OS%20X%2010_15_7%29%20AppleWebKit%2F537.36%20%28KHTML%2C%20like%20Gecko%29%20Chrome%2F142.0.0.0%20Safari%2F537.36; sbjs_session=pgs%3D1%7C%7C%7Ccpg%3Dhttps%3A%2F%2Fgoabode.com%2F; _rdt_uuid=1763097932410.a14dfbf9-2381-493a-926a-eff8f47a98de; _ga_WDEJMWNBBE=GS2.1.s1763356600$o5$g0$t1763356601$j59$l0$h0; cf_clearance=fi3N.79o14R6zGPA8KbAVMuZIbx6rJ4Rx7Uskjsgl1c-1763356601-1.2.1.1-DwZhSlOQIZlLrOVo4gVF8ELeklLjBLQbuO1..3qzEZacfMdiDTkvPCjxTG9VMMsK3cA1vd8bHeWWCJTiViyjaz9IM1J_bJVgqy1IljTABozDIKMJo4M_ILbjHJ4jghz9mgDL76wd6bjZWwVzzqqEhf4joBrrTURbw5dhB0rGYMFhFa1WaCREiu1CsuxgtfS1wnRKBItCNO4UU7HjO5Kr5r4PHUEFZJmIixNnh75WYSc; __stripe_sid=3cddcfd7-94de-41f7-b889-74de9c6ef1ef1a4582; key=web-55e08e80d586a054df88b98ca6aa8e43; io=6-QedhvshlTW3_NZCANp; AWSALB=x970K1AvSZwSgepT5E00B3y1XeAjXk3AKvlhk6M2E1m7JsP64Z2vHyqTeSDTNPPzTC/5JJ6sFlWLyAWEewAVjRmGAASFWqopxxHK/W7neFCDzioBu9VysypbVidb; AWSALBCORS=x970K1AvSZwSgepT5E00B3y1XeAjXk3AKvlhk6M2E1m7JsP64Z2vHyqTeSDTNPPzTC/5JJ6sFlWLyAWEewAVjRmGAASFWqopxxHK/W7neFCDzioBu9VysypbVidb; _ga_H6G2PP8V96=GS2.1.s1763356603$o3$g1$t1763356707$j21$l0$h0' \
+  -H 'dnt: 1' \
+  -H 'pragma: no-cache' \
+  -H 'priority: u=1, i' \
+  -H 'referer: https://my.goabode.com/' \
+  -H 'sec-ch-ua: "Chromium";v="142", "Google Chrome";v="142", "Not_A Brand";v="99"' \
+  -H 'sec-ch-ua-mobile: ?0' \
+  -H 'sec-ch-ua-platform: "macOS"' \
+  -H 'sec-fetch-dest: empty' \
+  -H 'sec-fetch-mode: cors' \
+  -H 'sec-fetch-site: same-origin' \
+  -H 'user-agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36' \
+  -H 'x-sender: WebApp'
+
+
+RESPONSE:
+  {
+    "id": "B0:C5:CA:3A:A4:84",
+    "siteId": "66236d79648c458bba0476051f7d9fed",
+    "type": "1",
+    "state": {
+        "panelMode": "STANDBY",
+        "currentAlarms": [],
+        "cellConnected": false,
+        "cellSignalStrength": "9"
+    },
+    "health": {
+        "connectivity": "OK",
+        "faults": []
+    },
+    "attributes": {
+        "home": {
+            "entryTimerInSeconds": 60,
+            "exitTimerInSeconds": 60
+        },
+        "away": {
+            "entryTimerInSeconds": 60,
+            "exitTimerInSeconds": 60
+        },
+        "cms": {
+            "vendorId": 2,
+            "vendor": "rrms",
+            "testModeActive": true,
+            "customSettings": true,
+            "monitoringActive": true,
+            "faults": [],
+            "pin": "4_DIGIT_PIN"
+        }
+    }
+}
