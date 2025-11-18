@@ -8,6 +8,8 @@ OAUTH_TOKEN = '/api/auth2/claims'
 PARAMS = '/api/v1/devices_beta/'
 
 PANEL = '/api/v1/panel'
+SECURITY_PANEL = '/integrations/v1/security-panel'
+CMS_SETTINGS = '/integrations/v1/cms/settings'
 
 INTEGRATIONS = '/integrations/v1/devices/'
 CAMERA_INTEGRATIONS = '/integrations/v1/camera/'

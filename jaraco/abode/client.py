@@ -348,6 +348,63 @@ class Client:
 
         return True
 
+    def get_test_mode(self):
+        """Get the current test mode status from the security panel."""
+        response = self.send_request("get", urls.SECURITY_PANEL)
+
+        log.debug("Get Test Mode URL (get): %s", urls.SECURITY_PANEL)
+        log.debug("Get Test Mode Response: %s", response.text)
+
+        response_object = response.json()
+
+        # Test mode status is in attributes.cms.testModeActive
+        test_mode_active = (
+            response_object.get('attributes', {})
+            .get('cms', {})
+            .get('testModeActive', False)
+        )
+
+        log.info("Test mode is currently: %s", "enabled" if test_mode_active else "disabled")
+
+        return test_mode_active
+
+    def set_test_mode(self, enabled):
+        """
+        Set the test mode for the monitoring service.
+
+        When enabled, any triggered alarms will not be dispatched to monitoring service.
+        Test mode automatically turns off after 30 minutes.
+
+        Args:
+            enabled: Boolean, True to enable test mode, False to disable
+
+        Returns:
+            Dict with the updated CMS settings
+        """
+        if not isinstance(enabled, bool):
+            raise jaraco.abode.Exception("Test mode must be a boolean value")
+
+        response = self.send_request(
+            "post", urls.CMS_SETTINGS, data={'testModeActive': enabled}
+        )
+
+        log.debug("Set Test Mode URL (post): %s", urls.CMS_SETTINGS)
+        log.debug("Set Test Mode Response: %s", response.text)
+
+        response_object = response.json()
+
+        if 'testModeActive' not in response_object:
+            raise jaraco.abode.Exception("Failed to set test mode - unexpected response")
+
+        if response_object.get('testModeActive') != enabled:
+            raise jaraco.abode.Exception(
+                f"Failed to set test mode to {enabled} - got {response_object.get('testModeActive')}"
+            )
+
+        log.info("Test mode set to: %s", "enabled" if enabled else "disabled")
+
+        return response_object
+
     def send_request(self, method, path, headers=None, data=None):
         """Send requests to Abode."""
         attempt = functools.partial(self._send_request, method, path, headers, data)
