@@ -373,7 +373,13 @@ class Client:
 
             if response and response.status_code < 400:
                 return response
-        except RequestException:
+
+            # Log error details for failed requests
+            log.error("Request failed: %s %s", method.upper(), path)
+            log.error("Status code: %s", response.status_code)
+            log.error("Response body: %s", response.text)
+        except RequestException as exc:
+            log.error("Request exception: %s", exc)
             log.info("Abode connection reset...")
 
         raise jaraco.abode.Exception(ERROR.REQUEST)
