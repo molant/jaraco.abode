@@ -204,6 +204,55 @@ def build_parser():
     )
 
     parser.add_argument(
+        '--trigger-alarm',
+        metavar='type',
+        help='Trigger a manual alarm by type (PANIC, SILENT_PANIC, MEDICAL, CO, SMOKE_CO, SMOKE, BURGLAR)',
+        action='append',
+    )
+
+    parser.add_argument(
+        '--acknowledge-event',
+        metavar='timeline_id',
+        help='Acknowledge a timeline event by timeline_id',
+        action='append',
+    )
+
+    parser.add_argument(
+        '--dismiss-event',
+        metavar='timeline_id',
+        help='Dismiss a timeline event by timeline_id',
+        action='append',
+    )
+
+    parser.add_argument(
+        '--test-mode-status',
+        help='Output the current test mode status',
+        default=False,
+        action="store_true",
+    )
+
+    parser.add_argument(
+        '--test-mode-enable',
+        help='Enable test mode (alarms will not be dispatched to monitoring service)',
+        default=False,
+        action="store_true",
+    )
+
+    parser.add_argument(
+        '--test-mode-disable',
+        help='Disable test mode',
+        default=False,
+        action="store_true",
+    )
+
+    parser.add_argument(
+        '--timeline-events',
+        help='List recent timeline events',
+        default=False,
+        action="store_true",
+    )
+
+    parser.add_argument(
         '--listen',
         help='Block and listen for device_id',
         default=False,
@@ -259,8 +308,15 @@ def _timeline_callback(resp):
         # Ignore device changes
         return
 
-    tmpl = '{event_name} - {event_type} at {date} {time}'
-    log.info(tmpl.format_map(resp))
+    # Include timeline ID in output if available
+    event_id = resp.get('id')
+    if event_id:
+        tmpl = '{event_name} (ID: {id}) - {event_type} at {date} {time}'
+        resp_with_id = {**resp, 'id': event_id}
+        log.info(tmpl.format_map(resp_with_id))
+    else:
+        tmpl = '{event_name} - {event_type} at {date} {time}'
+        log.info(tmpl.format_map(resp))
 
 
 class Dispatcher:  # pragma: no cover
@@ -285,6 +341,13 @@ class Dispatcher:  # pragma: no cover
         self.trigger_image_capture()
         self.start_kvs_stream()
         self.save_camera_image()
+        self.trigger_manual_alarm()
+        self.acknowledge_timeline_event()
+        self.dismiss_timeline_event()
+        self.output_test_mode_status()
+        self.enable_test_mode()
+        self.disable_test_mode()
+        self.print_timeline_events()
         self.print_all_devices()
         self.print_specific_devices()
         self.start_device_change_listener()
@@ -467,6 +530,82 @@ class Dispatcher:  # pragma: no cover
                 log.info("Saved image to %s for device id: %s", path, device.id)
         except jaraco.abode.Exception as exc:
             log.warning("Unable to save image: %s", exc)
+
+    def trigger_manual_alarm(self):
+        alarm = self.client.get_alarm()
+        for alarm_type in always_iterable(self.args.trigger_alarm):
+            self._trigger_manual_alarm(alarm, alarm_type)
+
+    @staticmethod
+    @pass_none
+    def _trigger_manual_alarm(alarm, alarm_type):
+        result = alarm.trigger_manual_alarm(alarm_type)
+        if result:
+            log.info('Triggered manual alarm of type: %s', alarm_type)
+            event_id = result.get('event_id')
+            if event_id:
+                log.info('Event ID: %s (use with --acknowledge-event or --dismiss-event)', event_id)
+        else:
+            log.warning('Failed to trigger manual alarm of type: %s', alarm_type)
+
+    def acknowledge_timeline_event(self):
+        for timeline_id in always_iterable(self.args.acknowledge_event):
+            self._acknowledge_timeline_event(timeline_id)
+
+    def _acknowledge_timeline_event(self, timeline_id):
+        if self.client.acknowledge_timeline_event(timeline_id):
+            log.info('Acknowledged timeline event: %s', timeline_id)
+        else:
+            log.warning('Failed to acknowledge timeline event: %s', timeline_id)
+
+    def dismiss_timeline_event(self):
+        for timeline_id in always_iterable(self.args.dismiss_event):
+            self._dismiss_timeline_event(timeline_id)
+
+    def _dismiss_timeline_event(self, timeline_id):
+        if self.client.dismiss_timeline_event(timeline_id):
+            log.info('Dismissed timeline event: %s', timeline_id)
+        else:
+            log.warning('Failed to dismiss timeline event: %s', timeline_id)
+
+    def output_test_mode_status(self):
+        if not self.args.test_mode_status:
+            return
+        test_mode = self.client.get_test_mode()
+        status = 'enabled' if test_mode else 'disabled'
+        log.info('Test mode is currently: %s', status)
+
+    def enable_test_mode(self):
+        if not self.args.test_mode_enable:
+            return
+        result = self.client.set_test_mode(True)
+        if result.get('testModeActive'):
+            log.info('Test mode enabled (automatically turns off after 30 minutes)')
+        else:
+            log.warning('Failed to enable test mode')
+
+    def disable_test_mode(self):
+        if not self.args.test_mode_disable:
+            return
+        result = self.client.set_test_mode(False)
+        if not result.get('testModeActive'):
+            log.info('Test mode disabled')
+        else:
+            log.warning('Failed to disable test mode')
+
+    def print_timeline_events(self):
+        if not self.args.timeline_events:
+            return
+        events = self.client.get_timeline_events(size=10)
+        if not events:
+            log.info('No timeline events found')
+            return
+        log.info('Recent timeline events:')
+        for event in events:
+            event_id = event.get('id') or event.get('tid')
+            event_type = event.get('type') or event.get('event_type')
+            event_timestamp = event.get('event_utc')
+            log.info('  ID: %s | Type: %s | Time: %s', event_id, event_type, event_timestamp)
 
     def print_all_devices(self):
         if not self.args.devices:

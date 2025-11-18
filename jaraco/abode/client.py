@@ -292,6 +292,169 @@ class Client:
         setting = settings.Setting.load(name.lower(), value, area)
         return self.send_request(method="put", path=setting.path, data=setting.data)
 
+    def acknowledge_timeline_event(self, timeline_id):
+        """Acknowledge/verify a timeline alarm event."""
+        return self._process_timeline_event(
+            timeline_id,
+            urls.timeline_verify_alarm,
+            'acknowledged',
+        )
+
+    def dismiss_timeline_event(self, timeline_id):
+        """Dismiss/ignore a timeline alarm event."""
+        return self._process_timeline_event(
+            timeline_id,
+            urls.timeline_ignore_alarm,
+            'dismissed',
+        )
+
+    def _process_timeline_event(self, timeline_id, url_func, action):
+        """Process a timeline event (acknowledge or dismiss).
+
+        Args:
+            timeline_id: ID of the timeline event to process
+            url_func: Function to generate the URL (e.g., urls.timeline_verify_alarm)
+            action: Action description for logging ('acknowledged' or 'dismissed')
+
+        Returns:
+            True if successful, raises exception otherwise
+        """
+        if not timeline_id:
+            raise jaraco.abode.Exception(ERROR.MISSING_TIMELINE_ID)
+
+        timeline_id = str(timeline_id)
+        url = url_func(timeline_id)
+
+        response = self._send_request('post', url, raise_on_error=False)
+
+        if response is None:
+            raise jaraco.abode.Exception(ERROR.REQUEST)
+
+        log.debug('Timeline Event URL (post): %s', url)
+        log.debug('Timeline Event Response: %s', response.text)
+
+        # Check if request was successful
+        if response.status_code < 400:
+            response_object = response.json()
+
+            if not all(key in response_object for key in ('code', 'message', 'tid')):
+                raise jaraco.abode.Exception(ERROR.ACK_TIMELINE_RESPONSE)
+
+            if str(response_object.get('tid')) != timeline_id:
+                raise jaraco.abode.Exception(ERROR.ACK_TIMELINE_RESPONSE)
+
+            log.info('Timeline event %s %s', timeline_id, action)
+            return True
+
+        # Handle error responses
+        try:
+            error_response = response.json()
+            error_code = error_response.get('errorCode')
+            error_message = error_response.get('message', 'Unknown error')
+
+            if error_code == ERROR.TIMELINE_EVENT_ALREADY_PROCESSED:
+                log.info(
+                    'Timeline event %s already %s: %s',
+                    timeline_id,
+                    action,
+                    error_message,
+                )
+                return True
+            else:
+                log.error(
+                    'Failed to %s timeline event %s (code %s): %s',
+                    action.rstrip('ed'),
+                    timeline_id,
+                    error_code,
+                    error_message,
+                )
+                raise jaraco.abode.Exception(ERROR.REQUEST)
+        except (ValueError, KeyError):
+            log.error(
+                'Failed to %s timeline event %s: unexpected response format',
+                action.rstrip('ed'),
+                timeline_id,
+            )
+            raise jaraco.abode.Exception(ERROR.REQUEST)
+
+    def get_timeline_events(self, size=10):
+        """Fetch recent timeline events.
+
+        Args:
+            size (int): Number of recent events to fetch (default 10)
+
+        Returns:
+            list: List of timeline event dictionaries
+        """
+        response = self.send_request("get", f"{urls.TIMELINE}?size={size}")
+
+        log.debug("Get Timeline Events URL (get): %s", urls.TIMELINE)
+        log.debug("Get Timeline Events Response: %s", response.text)
+
+        timeline_events = response.json()
+
+        if not isinstance(timeline_events, list):
+            log.warning('Unexpected timeline response format: %s', type(timeline_events))
+            return []
+
+        log.info('Fetched %d recent timeline events', len(timeline_events))
+        return timeline_events
+
+    def get_test_mode(self):
+        """Get the current test mode status from the security panel."""
+        response = self.send_request("get", urls.SECURITY_PANEL)
+
+        log.debug("Get Test Mode URL (get): %s", urls.SECURITY_PANEL)
+        log.debug("Get Test Mode Response: %s", response.text)
+
+        response_object = response.json()
+
+        # Test mode status is in attributes.cms.testModeActive
+        test_mode_active = (
+            response_object.get('attributes', {})
+            .get('cms', {})
+            .get('testModeActive', False)
+        )
+
+        log.info('Test mode is currently: %s', 'enabled' if test_mode_active else 'disabled')
+
+        return test_mode_active
+
+    def set_test_mode(self, enabled):
+        """
+        Set the test mode for the monitoring service.
+
+        When enabled, any triggered alarms will not be dispatched to monitoring service.
+        Test mode automatically turns off after 30 minutes.
+
+        Args:
+            enabled: Boolean, True to enable test mode, False to disable
+
+        Returns:
+            Dict with the updated CMS settings
+        """
+        if not isinstance(enabled, bool):
+            raise jaraco.abode.Exception(ERROR.INVALID_TEST_MODE_VALUE)
+
+        response = self.send_request(
+            'post', urls.CMS_SETTINGS, data={'testModeActive': enabled}
+        )
+
+        log.debug('Set Test Mode URL (post): %s', urls.CMS_SETTINGS)
+        log.debug('Set Test Mode Response: %s', response.text)
+
+        response_object = response.json()
+
+        if 'testModeActive' not in response_object:
+            raise jaraco.abode.Exception(ERROR.SET_TEST_MODE_RESPONSE)
+
+        if response_object.get('testModeActive') != enabled:
+            raise jaraco.abode.Exception(ERROR.SET_TEST_MODE_RESPONSE)
+
+        log.info('Test mode set to: %s', 'enabled' if enabled else 'disabled')
+
+        return response_object
+
     def send_request(self, method, path, headers=None, data=None):
         """Send requests to Abode."""
         attempt = functools.partial(self._send_request, method, path, headers, data)
@@ -302,7 +465,7 @@ class Client:
             trap=(jaraco.abode.Exception),
         )
 
-    def _send_request(self, method, path, headers, data):
+    def _send_request(self, method, path, headers=None, data=None, raise_on_error=True):
         if not self._token:
             self.login()
 
@@ -317,8 +480,13 @@ class Client:
 
             if response and response.status_code < 400:
                 return response
+
+            if not raise_on_error:
+                return response
         except RequestException:
             log.info("Abode connection reset...")
+            if not raise_on_error:
+                return None
 
         raise jaraco.abode.Exception(ERROR.REQUEST)
 

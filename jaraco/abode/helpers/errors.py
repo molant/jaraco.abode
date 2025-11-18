@@ -87,3 +87,21 @@ MFA_CODE_REQUIRED = (32, "Multifactor authentication code required for login.")
 UNKNOWN_MFA_TYPE = (33, "Unknown multifactor authentication type.")
 
 START_KVS_STREAM = (34, "Unable to start KVS stream for camera")
+
+MISSING_ALARM_TYPE = (35, "No alarm type found or alarm type is empty")
+
+INVALID_ALARM_TYPE = (36, "Alarm type is not a valid alarm type")
+
+TRIGGER_ALARM_RESPONSE = (37, "Manual alarm trigger response did not match expected values")
+
+MISSING_TIMELINE_ID = (38, "Timeline ID must be provided")
+
+INVALID_TIMELINE_ID = (39, "Timeline ID is not valid")
+
+ACK_TIMELINE_RESPONSE = (40, "Timeline acknowledgment response did not match expected values")
+
+INVALID_TEST_MODE_VALUE = (41, "Test mode must be a boolean value")
+
+SET_TEST_MODE_RESPONSE = (42, "Failed to set test mode - unexpected response")
+
+TIMELINE_EVENT_ALREADY_PROCESSED = 1069

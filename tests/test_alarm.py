@@ -208,3 +208,109 @@ class TestAlarm:
 
         with pytest.raises(jaraco.abode.Exception):
             alarm.set_mode('home')
+
+    def test_trigger_manual_alarm(self, m):
+        """Test that the alarm can trigger manual alarms."""
+        # Set up URLs
+        m.post(urls.LOGIN, json=LOGIN.post_response_ok())
+        m.get(urls.OAUTH_TOKEN, json=OAUTH_CLAIMS.get_response_ok())
+        m.get(urls.PANEL, json=PANEL.get_response_ok(mode='standby'))
+        m.get(urls.DEVICES, json=DEVICES.EMPTY_DEVICE_RESPONSE)
+
+        # Logout to reset everything
+        self.client.logout()
+
+        # Get alarm and test
+        alarm = self.client.get_alarm()
+
+        assert alarm is not None
+        assert alarm.status == 'standby'
+
+        # Mock alarm events for timeline matching
+        # Just need is_alarm='1' and recent event_utc
+        current_time = int(__import__('time').time())
+        alarm_event_1 = {
+            'id': '7656298643',
+            'is_alarm': '1',
+            'event_type': 'Panic Alert',
+            'event_utc': str(current_time),
+        }
+        alarm_event_2 = {
+            'id': '7656298644',
+            'is_alarm': '1',
+            'event_type': 'Silent Panic Alert',
+            'event_utc': str(current_time),
+        }
+        alarm_event_3 = {
+            'id': '7656298645',
+            'is_alarm': '1',
+            'event_type': 'Medical Alert',
+            'event_utc': str(current_time),
+        }
+        alarm_event_4 = {
+            'id': '7656298646',
+            'is_alarm': '1',
+            'event_type': 'CO Alert',
+            'event_utc': str(current_time),
+        }
+        alarm_event_5 = {
+            'id': '7656298647',
+            'is_alarm': '1',
+            'event_type': 'Smoke Alert',
+            'event_utc': str(current_time),
+        }
+
+        # Mock manual alarm endpoints - each trigger fetches timeline
+        m.post(urls.panel_alarm(), json={'code': 200, 'message': 'OK'})
+        m.get(urls.TIMELINE, json=[alarm_event_1])
+
+        m.post(urls.panel_alarm(), json={'code': 200, 'message': 'OK'})
+        m.get(urls.TIMELINE, json=[alarm_event_2])
+
+        m.post(urls.panel_alarm(), json={'code': 200, 'message': 'OK'})
+        m.get(urls.TIMELINE, json=[alarm_event_3])
+
+        m.post(urls.panel_alarm(), json={'code': 200, 'message': 'OK'})
+        m.get(urls.TIMELINE, json=[alarm_event_4])
+
+        # Test triggering different alarm types
+        result = alarm.trigger_manual_alarm('PANIC')
+        assert result
+        assert result.get('event_id') == '7656298643'
+
+        result = alarm.trigger_manual_alarm('SILENT_PANIC')
+        assert result
+        assert result.get('event_id') == '7656298644'
+
+        result = alarm.trigger_manual_alarm('MEDICAL')
+        assert result
+        assert result.get('event_id') == '7656298645'
+
+        result = alarm.trigger_manual_alarm('CO')
+        assert result
+        assert result.get('event_id') == '7656298646'
+
+        # Test case-insensitive input
+        m.post(urls.panel_alarm(), json={'code': 200, 'message': 'OK'})
+        m.get(urls.TIMELINE, json=[alarm_event_5])
+
+        result = alarm.trigger_manual_alarm('smoke')
+        assert result
+        assert result.get('event_id') == '7656298647'
+
+        # Test that no alarm type throws exception
+        with pytest.raises(jaraco.abode.Exception):
+            alarm.trigger_manual_alarm(None)
+
+        # Test that an invalid alarm type throws exception
+        with pytest.raises(jaraco.abode.Exception):
+            alarm.trigger_manual_alarm('INVALID_TYPE')
+
+        # Test that an invalid response throws exception
+        m.post(
+            urls.panel_alarm(),
+            json={'code': 400, 'message': 'Bad Request'},  # Non-200 code
+        )
+
+        with pytest.raises(jaraco.abode.Exception):
+            alarm.trigger_manual_alarm('BURGLAR')

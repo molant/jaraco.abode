@@ -41,7 +41,10 @@ Simple command line implementation arguments::
                  [--lock device_id] [--unlock device_id] [--automations]
                  [--activate automation_id] [--deactivate automation_id]
                  [--trigger automation_id] [--capture device_id] [--stream device_id]
-                 [--image device_id=location/image.jpg] [--listen] [--debug] [--quiet]
+                 [--image device_id=location/image.jpg] [--trigger-alarm type]
+                 [--acknowledge-event timeline_id] [--dismiss-event timeline_id]
+                 [--test-mode-status] [--test-mode-enable] [--test-mode-disable]
+                 [--listen] [--debug] [--quiet]
 
     options:
       -h, --help            show this help message and exit
@@ -72,6 +75,14 @@ Simple command line implementation arguments::
       --stream device_id    Start a new KVS video stream for the given device_id
       --image device_id=location/image.jpg
                             Save an image from a camera (if available) to the given path
+      --trigger-alarm type  Trigger a manual alarm by type (PANIC, SILENT_PANIC, MEDICAL, CO, SMOKE_CO, SMOKE, BURGLAR)
+      --acknowledge-event timeline_id
+                            Acknowledge a timeline event by timeline_id
+      --dismiss-event timeline_id
+                            Dismiss a timeline event by timeline_id
+      --test-mode-status    Output the current test mode status
+      --test-mode-enable    Enable test mode (alarms will not be dispatched to monitoring service)
+      --test-mode-disable   Disable test mode
       --listen              Block and listen for device_id
       --debug               Enable debug logging
       --quiet               Output only warnings and errors
@@ -175,8 +186,87 @@ To activate or deactivate an automation::
 To trigger a manual (quick) automation::
 
     $ abode --trigger 7
-    
+
       Triggered automation with id: 1
+
+Trigger a Manual Alarm
+======================
+
+Trigger a manual alarm by type (useful for testing or emergency scenarios)::
+
+    $ abode --trigger-alarm PANIC
+
+      Triggered manual alarm of type: PANIC
+
+Available alarm types::
+
+    PANIC         - Panic alarm
+    SILENT_PANIC  - Silent panic alarm
+    MEDICAL       - Medical emergency
+    CO            - Carbon monoxide
+    SMOKE_CO      - Smoke and carbon monoxide
+    SMOKE         - Smoke alarm
+    BURGLAR       - Burglar/intrusion alarm
+
+Timeline Events
+===============
+
+Acknowledge a timeline event after it has been triggered::
+
+    $ abode --acknowledge-event 12345
+
+      Acknowledged timeline event: 12345
+
+Dismiss (ignore) a timeline event::
+
+    $ abode --dismiss-event 12345
+
+      Dismissed timeline event: 12345
+
+Test Mode
+=========
+
+Test mode allows you to test your alarm system without dispatching alerts to the monitoring service. When enabled, any triggered alarms will not be sent to emergency services. Test mode automatically turns off after 30 minutes.
+
+Check the current test mode status::
+
+    $ abode --test-mode-status
+
+      Test mode is currently: disabled
+
+Enable test mode::
+
+    $ abode --test-mode-enable
+
+      Test mode enabled (automatically turns off after 30 minutes)
+
+Disable test mode::
+
+    $ abode --test-mode-disable
+
+      Test mode disabled
+
+**Python API Usage**
+
+You can also control test mode programmatically::
+
+    import jaraco.abode
+
+    # Initialize the client
+    client = jaraco.abode.Client(username='your@email.com', password='your_password')
+    client.login()
+
+    # Check test mode status
+    is_test_mode = client.get_test_mode()
+    print(f"Test mode is: {'enabled' if is_test_mode else 'disabled'}")
+
+    # Enable test mode
+    result = client.set_test_mode(True)
+    print("Test mode enabled")
+
+    # Disable test mode
+    result = client.set_test_mode(False)
+    print("Test mode disabled")
 
 Settings
 ========
