@@ -204,6 +204,27 @@ def build_parser():
     )
 
     parser.add_argument(
+        '--trigger-alarm',
+        metavar='type',
+        help='Trigger a manual alarm by type (PANIC, SILENT_PANIC, MEDICAL, CO, SMOKE_CO, SMOKE, BURGLAR)',
+        action='append',
+    )
+
+    parser.add_argument(
+        '--acknowledge-event',
+        metavar='timeline_id',
+        help='Acknowledge a timeline event by timeline_id',
+        action='append',
+    )
+
+    parser.add_argument(
+        '--dismiss-event',
+        metavar='timeline_id',
+        help='Dismiss a timeline event by timeline_id',
+        action='append',
+    )
+
+    parser.add_argument(
         '--listen',
         help='Block and listen for device_id',
         default=False,
@@ -285,6 +306,9 @@ class Dispatcher:  # pragma: no cover
         self.trigger_image_capture()
         self.start_kvs_stream()
         self.save_camera_image()
+        self.trigger_manual_alarm()
+        self.acknowledge_timeline_event()
+        self.dismiss_timeline_event()
         self.print_all_devices()
         self.print_specific_devices()
         self.start_device_change_listener()
@@ -467,6 +491,39 @@ class Dispatcher:  # pragma: no cover
                 log.info("Saved image to %s for device id: %s", path, device.id)
         except jaraco.abode.Exception as exc:
             log.warning("Unable to save image: %s", exc)
+
+    def trigger_manual_alarm(self):
+        alarm = self.client.get_alarm()
+        for alarm_type in always_iterable(self.args.trigger_alarm):
+            self._trigger_manual_alarm(alarm, alarm_type)
+
+    @staticmethod
+    @pass_none
+    def _trigger_manual_alarm(alarm, alarm_type):
+        if alarm.trigger_manual_alarm(alarm_type):
+            log.info("Triggered manual alarm of type: %s", alarm_type)
+        else:
+            log.warning("Failed to trigger manual alarm of type: %s", alarm_type)
+
+    def acknowledge_timeline_event(self):
+        for timeline_id in always_iterable(self.args.acknowledge_event):
+            self._acknowledge_timeline_event(timeline_id)
+
+    def _acknowledge_timeline_event(self, timeline_id):
+        if self.client.acknowledge_timeline_event(timeline_id):
+            log.info("Acknowledged timeline event: %s", timeline_id)
+        else:
+            log.warning("Failed to acknowledge timeline event: %s", timeline_id)
+
+    def dismiss_timeline_event(self):
+        for timeline_id in always_iterable(self.args.dismiss_event):
+            self._dismiss_timeline_event(timeline_id)
+
+    def _dismiss_timeline_event(self, timeline_id):
+        if self.client.dismiss_timeline_event(timeline_id):
+            log.info("Dismissed timeline event: %s", timeline_id)
+        else:
+            log.warning("Failed to dismiss timeline event: %s", timeline_id)
 
     def print_all_devices(self):
         if not self.args.devices:

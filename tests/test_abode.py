@@ -502,3 +502,87 @@ class TestAbode:
 
         # Test that some cache exists
         assert empty_client._session.cookies
+
+    def test_acknowledge_timeline_event(self, m):
+        """Test that timeline events can be acknowledged."""
+        # Set up login URLs
+        m.post(urls.LOGIN, json=LOGIN.post_response_ok())
+        m.get(urls.OAUTH_TOKEN, json=OAUTH_CLAIMS.get_response_ok())
+
+        # Mock timeline acknowledgment endpoint
+        m.post(
+            urls.timeline_verify_alarm('12345'),
+            json={'code': '0', 'message': 'Success', 'tid': 12345},
+        )
+        m.post(
+            urls.timeline_verify_alarm('67890'),
+            json={'code': '0', 'message': 'Success', 'tid': 67890},
+        )
+        m.post(
+            urls.timeline_verify_alarm('11111'),
+            json={'code': '0', 'message': 'Success', 'tid': 22222},
+        )
+        m.post(
+            urls.timeline_verify_alarm('33333'),
+            json={'code': '0'},  # Missing 'message' and 'tid'
+        )
+
+        # Test acknowledging timeline event
+        assert self.client.acknowledge_timeline_event('12345')
+
+        # Test with integer timeline ID
+        assert self.client.acknowledge_timeline_event(67890)
+
+        # Test that no timeline ID throws exception
+        with pytest.raises(jaraco.abode.Exception):
+            self.client.acknowledge_timeline_event(None)
+
+        # Test that mismatched timeline ID throws exception
+        with pytest.raises(jaraco.abode.Exception):
+            self.client.acknowledge_timeline_event('11111')
+
+        # Test that missing response fields throws exception
+        with pytest.raises(jaraco.abode.Exception):
+            self.client.acknowledge_timeline_event('33333')
+
+    def test_dismiss_timeline_event(self, m):
+        """Test that timeline events can be dismissed."""
+        # Set up login URLs
+        m.post(urls.LOGIN, json=LOGIN.post_response_ok())
+        m.get(urls.OAUTH_TOKEN, json=OAUTH_CLAIMS.get_response_ok())
+
+        # Mock timeline dismissal endpoint
+        m.post(
+            urls.timeline_ignore_alarm('12345'),
+            json={'code': '0', 'message': 'Ignored', 'tid': 12345},
+        )
+        m.post(
+            urls.timeline_ignore_alarm('67890'),
+            json={'code': '0', 'message': 'Ignored', 'tid': 67890},
+        )
+        m.post(
+            urls.timeline_ignore_alarm('11111'),
+            json={'code': '0', 'message': 'Ignored', 'tid': 22222},
+        )
+        m.post(
+            urls.timeline_ignore_alarm('33333'),
+            json={'message': 'Ignored'},  # Missing 'code' and 'tid'
+        )
+
+        # Test dismissing timeline event
+        assert self.client.dismiss_timeline_event('12345')
+
+        # Test with integer timeline ID
+        assert self.client.dismiss_timeline_event(67890)
+
+        # Test that no timeline ID throws exception
+        with pytest.raises(jaraco.abode.Exception):
+            self.client.dismiss_timeline_event(None)
+
+        # Test that mismatched timeline ID throws exception
+        with pytest.raises(jaraco.abode.Exception):
+            self.client.dismiss_timeline_event('11111')
+
+        # Test that missing response fields throws exception
+        with pytest.raises(jaraco.abode.Exception):
+            self.client.dismiss_timeline_event('33333')

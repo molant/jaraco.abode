@@ -208,3 +208,68 @@ class TestAlarm:
 
         with pytest.raises(jaraco.abode.Exception):
             alarm.set_mode('home')
+
+    def test_trigger_manual_alarm(self, m):
+        """Test that the alarm can trigger manual alarms."""
+        # Set up URLs
+        m.post(urls.LOGIN, json=LOGIN.post_response_ok())
+        m.get(urls.OAUTH_TOKEN, json=OAUTH_CLAIMS.get_response_ok())
+        m.get(urls.PANEL, json=PANEL.get_response_ok(mode='standby'))
+        m.get(urls.DEVICES, json=DEVICES.EMPTY_DEVICE_RESPONSE)
+
+        # Logout to reset everything
+        self.client.logout()
+
+        # Get alarm and test
+        alarm = self.client.get_alarm()
+
+        assert alarm is not None
+        assert alarm.status == 'standby'
+
+        # Mock manual alarm endpoints for different alarm types
+        m.post(
+            urls.panel_alarm('PANIC'),
+            json={'type': 'PANIC'},
+        )
+        m.post(
+            urls.panel_alarm('SILENT_PANIC'),
+            json={'type': 'SILENT_PANIC'},
+        )
+        m.post(
+            urls.panel_alarm('MEDICAL'),
+            json={'type': 'MEDICAL'},
+        )
+        m.post(
+            urls.panel_alarm('CO'),
+            json={'type': 'CO'},
+        )
+
+        # Test triggering different alarm types
+        assert alarm.trigger_manual_alarm('PANIC')
+        assert alarm.trigger_manual_alarm('SILENT_PANIC')
+        assert alarm.trigger_manual_alarm('MEDICAL')
+        assert alarm.trigger_manual_alarm('CO')
+
+        # Test case-insensitive input
+        m.post(
+            urls.panel_alarm('SMOKE'),
+            json={'type': 'SMOKE'},
+        )
+        assert alarm.trigger_manual_alarm('smoke')
+
+        # Test that no alarm type throws exception
+        with pytest.raises(jaraco.abode.Exception):
+            alarm.trigger_manual_alarm(None)
+
+        # Test that an invalid alarm type throws exception
+        with pytest.raises(jaraco.abode.Exception):
+            alarm.trigger_manual_alarm('INVALID_TYPE')
+
+        # Test that an invalid response throws exception
+        m.post(
+            urls.panel_alarm('BURGLAR'),
+            json={'type': 'PANIC'},  # Wrong type in response
+        )
+
+        with pytest.raises(jaraco.abode.Exception):
+            alarm.trigger_manual_alarm('BURGLAR')

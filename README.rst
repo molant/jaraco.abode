@@ -41,7 +41,9 @@ Simple command line implementation arguments::
                  [--lock device_id] [--unlock device_id] [--automations]
                  [--activate automation_id] [--deactivate automation_id]
                  [--trigger automation_id] [--capture device_id] [--stream device_id]
-                 [--image device_id=location/image.jpg] [--listen] [--debug] [--quiet]
+                 [--image device_id=location/image.jpg] [--trigger-alarm type]
+                 [--acknowledge-event timeline_id] [--dismiss-event timeline_id]
+                 [--listen] [--debug] [--quiet]
 
     options:
       -h, --help            show this help message and exit
@@ -72,6 +74,11 @@ Simple command line implementation arguments::
       --stream device_id    Start a new KVS video stream for the given device_id
       --image device_id=location/image.jpg
                             Save an image from a camera (if available) to the given path
+      --trigger-alarm type  Trigger a manual alarm by type (PANIC, SILENT_PANIC, MEDICAL, CO, SMOKE_CO, SMOKE, BURGLAR)
+      --acknowledge-event timeline_id
+                            Acknowledge a timeline event by timeline_id
+      --dismiss-event timeline_id
+                            Dismiss a timeline event by timeline_id
       --listen              Block and listen for device_id
       --debug               Enable debug logging
       --quiet               Output only warnings and errors
@@ -175,8 +182,42 @@ To activate or deactivate an automation::
 To trigger a manual (quick) automation::
 
     $ abode --trigger 7
-    
+
       Triggered automation with id: 1
+
+Trigger a Manual Alarm
+======================
+
+Trigger a manual alarm by type (useful for testing or emergency scenarios)::
+
+    $ abode --trigger-alarm PANIC
+
+      Triggered manual alarm of type: PANIC
+
+Available alarm types::
+
+    PANIC         - Panic alarm
+    SILENT_PANIC  - Silent panic alarm
+    MEDICAL       - Medical emergency
+    CO            - Carbon monoxide
+    SMOKE_CO      - Smoke and carbon monoxide
+    SMOKE         - Smoke alarm
+    BURGLAR       - Burglar/intrusion alarm
+
+Timeline Events
+===============
+
+Acknowledge a timeline event after it has been triggered::
+
+    $ abode --acknowledge-event 12345
+
+      Acknowledged timeline event: 12345
+
+Dismiss (ignore) a timeline event::
+
+    $ abode --dismiss-event 12345
+
+      Dismissed timeline event: 12345
 
 Settings
 ========

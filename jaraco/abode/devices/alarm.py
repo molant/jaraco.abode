@@ -36,6 +36,7 @@ class Alarm(Switch):
 
     tags = ('alarm',)
     all_modes = 'away', 'standby', 'home'
+    all_alarm_types = 'PANIC', 'SILENT_PANIC', 'MEDICAL', 'CO', 'SMOKE_CO', 'SMOKE', 'BURGLAR'
 
     def __init__(self, json_obj, abode, area='1'):
         """Set up Abode alarm device."""
@@ -82,6 +83,32 @@ class Alarm(Switch):
     def set_standby(self):
         """Arm Abode to stay mode."""
         return self.set_mode('standby')
+
+    def trigger_manual_alarm(self, alarm_type):
+        """Trigger a manual alarm."""
+        if not alarm_type:
+            raise jaraco.abode.Exception(ERROR.MISSING_ALARM_TYPE)
+
+        alarm_type = alarm_type.upper()
+
+        if alarm_type not in self.all_alarm_types:
+            raise jaraco.abode.Exception(ERROR.INVALID_ALARM_TYPE)
+
+        response = self._client.send_request(
+            "post", urls.panel_alarm(alarm_type), data={'type': alarm_type}
+        )
+
+        log.debug("Trigger Manual Alarm URL (post): %s", urls.panel_alarm(alarm_type))
+        log.debug("Trigger Manual Alarm Response: %s", response.text)
+
+        response_object = response.json()
+
+        if response_object.get('type') != alarm_type:
+            raise jaraco.abode.Exception(ERROR.TRIGGER_ALARM_RESPONSE)
+
+        log.info("Triggered manual alarm %s of type: %s", self.id, alarm_type)
+
+        return True
 
     def switch_on(self):
         """Arm Abode to default mode."""

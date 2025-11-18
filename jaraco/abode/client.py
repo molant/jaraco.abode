@@ -292,6 +292,62 @@ class Client:
         setting = settings.Setting.load(name.lower(), value, area)
         return self.send_request(method="put", path=setting.path, data=setting.data)
 
+    def acknowledge_timeline_event(self, timeline_id):
+        """Acknowledge/verify a timeline alarm event."""
+        if not timeline_id:
+            raise jaraco.abode.Exception(ERROR.MISSING_TIMELINE_ID)
+
+        timeline_id = str(timeline_id)
+
+        response = self.send_request(
+            "post", urls.timeline_verify_alarm(timeline_id)
+        )
+
+        log.debug(
+            "Acknowledge Timeline Event URL (post): %s",
+            urls.timeline_verify_alarm(timeline_id),
+        )
+        log.debug("Acknowledge Timeline Event Response: %s", response.text)
+
+        response_object = response.json()
+
+        if not all(key in response_object for key in ('code', 'message', 'tid')):
+            raise jaraco.abode.Exception(ERROR.ACK_TIMELINE_RESPONSE)
+
+        if str(response_object.get('tid')) != timeline_id:
+            raise jaraco.abode.Exception(ERROR.ACK_TIMELINE_RESPONSE)
+
+        log.info("Acknowledged timeline event %s", timeline_id)
+
+        return True
+
+    def dismiss_timeline_event(self, timeline_id):
+        """Dismiss/ignore a timeline alarm event."""
+        if not timeline_id:
+            raise jaraco.abode.Exception(ERROR.MISSING_TIMELINE_ID)
+
+        timeline_id = str(timeline_id)
+
+        response = self.send_request("post", urls.timeline_ignore_alarm(timeline_id))
+
+        log.debug(
+            "Dismiss Timeline Event URL (post): %s",
+            urls.timeline_ignore_alarm(timeline_id),
+        )
+        log.debug("Dismiss Timeline Event Response: %s", response.text)
+
+        response_object = response.json()
+
+        if not all(key in response_object for key in ('code', 'message', 'tid')):
+            raise jaraco.abode.Exception(ERROR.ACK_TIMELINE_RESPONSE)
+
+        if str(response_object.get('tid')) != timeline_id:
+            raise jaraco.abode.Exception(ERROR.ACK_TIMELINE_RESPONSE)
+
+        log.info("Dismissed timeline event %s", timeline_id)
+
+        return True
+
     def send_request(self, method, path, headers=None, data=None):
         """Send requests to Abode."""
         attempt = functools.partial(self._send_request, method, path, headers, data)
