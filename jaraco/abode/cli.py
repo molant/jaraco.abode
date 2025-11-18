@@ -225,6 +225,27 @@ def build_parser():
     )
 
     parser.add_argument(
+        '--test-mode-status',
+        help='Output the current test mode status',
+        default=False,
+        action="store_true",
+    )
+
+    parser.add_argument(
+        '--test-mode-enable',
+        help='Enable test mode (alarms will not be dispatched to monitoring service)',
+        default=False,
+        action="store_true",
+    )
+
+    parser.add_argument(
+        '--test-mode-disable',
+        help='Disable test mode',
+        default=False,
+        action="store_true",
+    )
+
+    parser.add_argument(
         '--listen',
         help='Block and listen for device_id',
         default=False,
@@ -309,6 +330,9 @@ class Dispatcher:  # pragma: no cover
         self.trigger_manual_alarm()
         self.acknowledge_timeline_event()
         self.dismiss_timeline_event()
+        self.output_test_mode_status()
+        self.enable_test_mode()
+        self.disable_test_mode()
         self.print_all_devices()
         self.print_specific_devices()
         self.start_device_change_listener()
@@ -524,6 +548,31 @@ class Dispatcher:  # pragma: no cover
             log.info("Dismissed timeline event: %s", timeline_id)
         else:
             log.warning("Failed to dismiss timeline event: %s", timeline_id)
+
+    def output_test_mode_status(self):
+        if not self.args.test_mode_status:
+            return
+        test_mode = self.client.get_test_mode()
+        status = "enabled" if test_mode else "disabled"
+        log.info("Test mode is currently: %s", status)
+
+    def enable_test_mode(self):
+        if not self.args.test_mode_enable:
+            return
+        result = self.client.set_test_mode(True)
+        if result.get('testModeActive'):
+            log.info("Test mode enabled (automatically turns off after 30 minutes)")
+        else:
+            log.warning("Failed to enable test mode")
+
+    def disable_test_mode(self):
+        if not self.args.test_mode_disable:
+            return
+        result = self.client.set_test_mode(False)
+        if not result.get('testModeActive'):
+            log.info("Test mode disabled")
+        else:
+            log.warning("Failed to disable test mode")
 
     def print_all_devices(self):
         if not self.args.devices:
